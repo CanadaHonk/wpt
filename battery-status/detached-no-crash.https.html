@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="/resources/testharness.js"></script>
+<script src="/resources/testharnessreport.js"></script>
+<script src="/resources/test-only-api.js"></script>
+<script src="resources/battery-status-helpers.js"></script>
+</head>
+<body>
+<script>
+function waitForMessage(data) {
+  return new Promise(
+      resolve => {
+        window.addEventListener('message', e => {
+          if (e.data == data) {
+            resolve();
+          }
+        }, {once: true});
+      });
+}
+
+battery_status_test(async (t, mockBatteryMonitor) => {
+  const w = window.open('resources/window-postmessage-open-close.html');
+  await waitForMessage('opened');
+
+  const nav = w.navigator;
+  let result = nav.getBattery();
+  assert_equals(typeof result, 'object');
+  assert_equals(result.constructor, w.Promise);
+
+  w.close();
+  await waitForMessage('closed');
+  result = nav.getBattery();
+  assert_equals(result, undefined);
+}, 'navigator.getBattery() does not operate on a closed window');
+</script>
+</body>
+</html>

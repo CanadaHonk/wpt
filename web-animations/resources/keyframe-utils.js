@@ -30,6 +30,9 @@ function assert_frames_equal(a, b, name) {
                 `properties on ${name} should match`);
   // Iterates sorted keys to ensure stable failures.
   for (const p of Object.keys(a).sort()) {
-    assert_equals(a[p], b[p], `value for '${p}' on ${name}`);
+    if (typeof a[p] == 'number')
+      assert_approx_equals(a[p], b[p], 1e-6, `value for '${p}' on ${name}`);
+    else
+      assert_equals(a[p], b[p], `value for '${p}' on ${name}`);
   }
 }

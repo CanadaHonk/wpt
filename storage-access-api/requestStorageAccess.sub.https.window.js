@@ -47,7 +47,7 @@ promise_test(
         await test_driver.delete_all_cookies();
       });
 
-      await RunCallbackWithGesture(() => document.requestStorageAccess());
+      await document.requestStorageAccess();
 
       await fetch(`${window.location.origin}/cookies/resources/set-cookie.py?name=cookie&path=/&samesite=None&secure=`)
           .then((resp) => resp.text());
@@ -57,7 +57,7 @@ promise_test(
           'After obtaining storage access, subresource requests from the frame should send and set cookies.');
     },
     '[' + testPrefix +
-        '] document.requestStorageAccess() should be resolved when called properly with a user gesture, and ' +
+        '] document.requestStorageAccess() should be resolved with no user gesture when a permission grant exists, and ' +
         'should allow cookie access');
 
 if (!topLevelDocument && !testPrefix.includes('same-origin')) {

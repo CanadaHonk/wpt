@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<link rel="help" href="https://drafts.csswg.org/css-inline-3/#baseline-source">
+<script src="/resources/testharness.js"></script>
+<script src="/resources/testharnessreport.js"></script>
+<style>
+#target {
+  text-wrap: balance;
+  white-space: normal;
+}
+</style>
+<div id="target"></div>
+<script>
+test(() => {
+  const target = document.getElementById('target');
+  assert_equals(getComputedStyle(target).textWrap, 'wrap');
+});
+</script>
